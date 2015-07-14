@@ -7,26 +7,20 @@ object Generalizer {
   val w0 = 1.0
   @volatile var parameter: Array[Double] = Array(0.1, 0.1, 1.0, -2.0)
 
-  def update(w: Array[Double], sample: (Array[Int], Double)): Array[Double] = {
-    require(w.size == sample._1.size)
+  def update(sample: (Array[Int], Double)) = {
+    require(parameter.size == sample._1.size)
 
     var i = 0
     var Vb = w0
-    while (i < w.length) {
-      Vb += w(i) * sample._1(i)
+    while (i < parameter.length) {
+      Vb += parameter(i) * sample._1(i)
       i += 1
     }
 
-    val result = new Array[Double](w.size)
     i = 0
-    while (i < result.length) {
-      result(i) = w(i) + 0.1 * (sample._2 - Vb) * sample._1(i)
-
+    while (i < parameter.length) {
+      parameter(i) = parameter(i) + 0.1 * (sample._2 - Vb) * sample._1(i)
       i += 1
     }
-
-    parameter = result
-
-    result
   }
 }

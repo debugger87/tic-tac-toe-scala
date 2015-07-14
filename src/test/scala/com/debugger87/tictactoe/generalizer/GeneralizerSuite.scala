@@ -7,11 +7,10 @@ import org.scalatest.FunSuite
  */
 class GeneralizerSuite extends FunSuite {
 
-  val currentW = Array(1.0, 3.0, 2.0, 0.5)
   val sample = (Array(2, 2, 1, 0), 2.7)
 
   test("update parameters in currentW") {
-    println(Generalizer.update(currentW, sample).mkString("[", ",", "]"))
-    assert(Generalizer.update(currentW, sample).isInstanceOf[Array[Double]])
+    Generalizer.update(sample)
+    assert(Generalizer.parameter.isInstanceOf[Array[Double]])
   }
 }

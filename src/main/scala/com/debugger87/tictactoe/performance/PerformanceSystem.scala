@@ -205,6 +205,8 @@ object PerformanceSystem extends App {
         println("Game drawn!")
       }
 
+
+
       println()
       println("Enter into another game! Notice: the computer will be smarter!!!")
       // clear data
