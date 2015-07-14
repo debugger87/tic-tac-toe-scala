@@ -20,7 +20,11 @@ object Critic extends BoardUtil {
     }
 
     val lastBoard = history.last
-    result :+= (getBoardProperties(lastBoard), objectiveFun(lastBoard))
+    if (isFinalBoard(lastBoard)) {
+      result :+= (getBoardProperties(lastBoard), objectiveFun(lastBoard))
+    } else {
+      result :+= (getBoardProperties(lastBoard), -100.0)
+    }
 
     result
   }
