@@ -154,6 +154,7 @@ object PerformanceSystem extends App {
     }
   }
 
+  println("Usage: the computer use 'X', and you use 'O'")
   println("Initializing board...")
   printBoard(board)
   while (true) {
