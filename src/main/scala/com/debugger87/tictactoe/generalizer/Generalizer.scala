@@ -7,6 +7,8 @@ object Generalizer {
   val w0 = 1.0
 
   def update(w: Array[Double], sample: (Array[Int], Double)): Array[Double] = {
+    require(w.size == sample._1.size)
+
     var i = 0
     var Vb = w0
     while (i < w.length) {
