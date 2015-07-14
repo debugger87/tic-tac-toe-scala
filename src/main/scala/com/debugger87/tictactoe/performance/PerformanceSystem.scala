@@ -16,7 +16,8 @@ object PerformanceSystem extends App with BoardUtil {
   val out = new PrintWriter(System.out)
   var board = Generator.generate
 
-  var history = Array[Array[Array[Char]]]()
+  var computerHistory = Array[Array[Array[Char]]]()
+  var userHistory = Array[Array[Array[Char]]]()
 
   def nextInt = in.nextInt
 
@@ -85,7 +86,7 @@ object PerformanceSystem extends App with BoardUtil {
       }).maxBy(_._2)._1
 
       if (selectedBoard.isDefined) {
-        history :+= selectedBoard.get
+        computerHistory :+= selectedBoard.get
         board = selectedBoard.get
 
         println("Computer plays this:")
@@ -98,6 +99,7 @@ object PerformanceSystem extends App with BoardUtil {
           while (!userBoard.isDefined) {
             userBoard = play(x, y, isComputer = false)
             if (userBoard.isDefined) {
+              userHistory :+= userBoard.get
               board = userBoard.get
 
               println("Your play:")
@@ -120,10 +122,15 @@ object PerformanceSystem extends App with BoardUtil {
         println("Game drawn!")
       }
 
-      val sampleData = Critic.completeSampleData(history)
-      sampleData.foreach( sample => {
+      val computerSampleData = Critic.completeSampleData(computerHistory)
+      computerSampleData.foreach( sample => {
         Generalizer.update(sample)
       })
+      val userSampleData = Critic.completeSampleData(userHistory)
+      userSampleData.foreach( sample => {
+        Generalizer.update(sample)
+      })
+
       FileUtil.saveModel(Generalizer.parameter.mkString(","))
 
       println()
@@ -133,7 +140,8 @@ object PerformanceSystem extends App with BoardUtil {
       println("Initializing board...")
       board = Generator.generate
       printBoard(board)
-      history = Array[Array[Array[Char]]]()
+      computerHistory = Array[Array[Array[Char]]]()
+      userHistory = Array[Array[Array[Char]]]()
     }
   }
 }
