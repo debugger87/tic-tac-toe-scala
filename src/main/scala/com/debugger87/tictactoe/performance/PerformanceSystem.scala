@@ -1,5 +1,6 @@
 package com.debugger87.tictactoe.performance
 
+import com.debugger87.tictactoe.experiment.Generator
 import com.debugger87.tictactoe.generalizer.Generalizer
 
 /**
@@ -11,7 +12,7 @@ object PerformanceSystem extends App {
 
   val in = new Scanner(System.in)
   val out = new PrintWriter(System.out)
-  var board = Array.fill(3, 3)('-')
+  var board = Generator.generate
   val lines = Array(
     Array((0, 0), (0, 1), (0, 2)),
     Array((0, 0), (1, 0), (2, 0)),
@@ -153,6 +154,8 @@ object PerformanceSystem extends App {
     }
   }
 
+  println("Initializing board...")
+  printBoard(board)
   while (true) {
     if (!isFinalBoard(board)) {
       val blankGrids = search
@@ -205,7 +208,9 @@ object PerformanceSystem extends App {
       println()
       println("Enter into another game! Notice: the computer will be smarter!!!")
       // clear data
-      board = Array.fill(3, 3)('-')
+      println("Initializing board...")
+      board = Generator.generate
+      printBoard(board)
       history = Array[Array[Array[Char]]]()
     }
   }

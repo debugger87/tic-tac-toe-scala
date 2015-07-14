@@ -1,5 +1,7 @@
 package com.debugger87.tictactoe.experiment
 
+import scala.util.Random
+
 /**
  * Created by yangchaozhong on 7/14/15.
  */
@@ -14,18 +16,11 @@ object Generator {
    * @return chess board
    */
   def generate: Array[Array[Char]] = {
-    val arr = Array.ofDim[Char](3, 3)
-
-    arr(0)(0) = '-'
-    arr(0)(1) = 'X'
-    arr(0)(2) = 'O'
-    arr(1)(0) = 'X'
-    arr(1)(1) = '-'
-    arr(1)(2) = 'O'
-    arr(2)(0) = '-'
-    arr(2)(1) = '-'
-    arr(2)(2) = '-'
-
+    val arr = Array.fill(3, 3)('-')
+    var x = math.abs(Random.nextInt()) % 9
+    var y = (x + 3) % 9
+    arr(x / 3)(0) = 'X'
+    arr(y / 3)(2) = 'O'
     arr
   }
 }
