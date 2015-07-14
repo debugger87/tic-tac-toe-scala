@@ -9,6 +9,7 @@ sbt clean assembly
 
 ### Run
 
+```
 $ java -cp target/scala-2.10/tic-tac-toe-scala-assembly-1.0.jar com.debugger87.tictactoe.performance.PerformanceSystem
 loaded model from file: 26.789046490793943,-8.196950584570022,18.632860527618167,-9.223599223967508
 Usage: the computer use 'X', and you use 'O'. '-' represents blank space.
