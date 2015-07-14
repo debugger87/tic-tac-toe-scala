@@ -89,7 +89,7 @@ trait BoardUtil {
         0.0
       }
     } else if (countWinningChance(candidateBoard, isComputer = false) > 0) {
-      -100.0
+      Double.NegativeInfinity
     } else {
       val x1 = countCorner(candidateBoard, isComputer = true)
       val x2 = countCorner(candidateBoard, isComputer = false)
