@@ -70,7 +70,8 @@ object PerformanceSystem extends App with BoardUtil {
     println(s"loaded model from file: ${x.mkString(",")}")
   })
 
-  println("Usage: the computer use 'X', and you use 'O'. '-' represents blank space.")
+  println("Usage: the computer use 'X', and you use 'O'. '-' represents blank space. You just need " +
+    "to input the position which is constructed by x and y.")
   println("Initializing board...")
   while (true) {
     if (!isFinalBoard(board)) {
