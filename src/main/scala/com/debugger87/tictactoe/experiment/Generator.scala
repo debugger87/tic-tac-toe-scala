@@ -6,7 +6,7 @@ package com.debugger87.tictactoe.experiment
 object Generator {
 
   /**
-   * Always generate this chess board where "-" indicates whitespace
+   * Always generate this chess board where "-" indicates blank space
    * "-" "X" "O"
    * "X" "-" "O"
    * "-" "-" "-"
