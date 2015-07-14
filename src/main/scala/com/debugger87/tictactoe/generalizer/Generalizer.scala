@@ -4,9 +4,8 @@ package com.debugger87.tictactoe.generalizer
  * Created by yangchaozhong on 7/14/15.
  */
 object Generalizer {
-  private val w0 = 1.0
-
-  @volatile var parameter: Array[Double] = _
+  val w0 = 1.0
+  @volatile var parameter: Array[Double] = Array(1.0, 1.0, 1.0, -1.0)
 
   def update(w: Array[Double], sample: (Array[Int], Double)): Array[Double] = {
     require(w.size == sample._1.size)
