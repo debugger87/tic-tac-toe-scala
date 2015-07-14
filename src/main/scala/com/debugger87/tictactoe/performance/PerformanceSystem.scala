@@ -127,10 +127,10 @@ object PerformanceSystem extends App with BoardUtil {
       computerSampleData.foreach( sample => {
         Generalizer.update(sample)
       })
-      val userSampleData = Critic.completeSampleData(userHistory)
-      userSampleData.foreach( sample => {
-        Generalizer.update(sample)
-      })
+//      val userSampleData = Critic.completeSampleData(userHistory)
+//      userSampleData.foreach( sample => {
+//        Generalizer.update(sample)
+//      })
 
       FileUtil.saveModel(Generalizer.parameter.mkString(","))
 
