@@ -1,6 +1,6 @@
 import AssemblyKeys._
 
-organization := "com.debugger87.game"
+organization := "com.debugger87.tictactoe"
 
 name := "tic-tac-toe-scala"
 
@@ -21,13 +21,13 @@ resolvers ++= Seq(
 assemblySettings
 
 mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) => {
-  case m if m.toLowerCase.matches("meta-inf.*\\.mf$") => MergeStrategy.discard
-  case m if m.toLowerCase.matches("meta-inf.*\\.sf$") => MergeStrategy.discard
-  case m if m.toLowerCase.matches("meta-inf.*\\.rsa$") => MergeStrategy.discard
-  case m if m.toLowerCase.matches("meta-inf.*\\.dsa$") => MergeStrategy.discard
-  case "reference.conf" => MergeStrategy.concat
-  case _ => MergeStrategy.first
-}
+    case m if m.toLowerCase.matches("meta-inf.*\\.mf$") => MergeStrategy.discard
+    case m if m.toLowerCase.matches("meta-inf.*\\.sf$") => MergeStrategy.discard
+    case m if m.toLowerCase.matches("meta-inf.*\\.rsa$") => MergeStrategy.discard
+    case m if m.toLowerCase.matches("meta-inf.*\\.dsa$") => MergeStrategy.discard
+    case "reference.conf" => MergeStrategy.concat
+    case _ => MergeStrategy.first
+  }
 }
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
