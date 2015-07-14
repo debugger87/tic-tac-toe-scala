@@ -11,15 +11,15 @@ object Generalizer {
     require(parameter.size == sample._1.size)
 
     var i = 0
-    var Vb = w0
+    var vb = w0
     while (i < parameter.length) {
-      Vb += parameter(i) * sample._1(i)
+      vb += parameter(i) * sample._1(i)
       i += 1
     }
 
     i = 0
     while (i < parameter.length) {
-      parameter(i) = parameter(i) + 0.1 * (sample._2 - Vb) * sample._1(i)
+      parameter(i) = parameter(i) + 0.1 * (sample._2 - vb) * sample._1(i)
       i += 1
     }
   }
