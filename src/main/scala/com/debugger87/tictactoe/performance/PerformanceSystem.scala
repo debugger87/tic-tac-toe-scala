@@ -27,8 +27,8 @@ object PerformanceSystem extends App {
 
   def nextInt = in.nextInt
 
-  def printBoard = {
-    board.foreach( arr =>
+  def printBoard(candidateBoard: Array[Array[Char]]) = {
+    candidateBoard.foreach( arr =>
       println(arr.mkString(" "))
     )
   }
@@ -57,10 +57,9 @@ object PerformanceSystem extends App {
 
     var i = 0
     while (i < board.size) {
-      val arr = board(i)
       var j = 0
-      while (j < arr.size) {
-        if (arr(j) == '-') {
+      while (j < board(i).size) {
+        if (board(i)(j) == '-') {
           result :+= (i, j)
         }
         j += 1
@@ -81,36 +80,47 @@ object PerformanceSystem extends App {
   def countWinningChance(candidateBoard: Array[Array[Char]], isComputer: Boolean) = {
     val flag = if (isComputer) 'X' else 'O'
 
-    lines.count(line =>
+    lines.count {line => {
       line.count(pos => {
         val x = pos._1
         val y = pos._2
 
         candidateBoard(x)(y) == flag
-      }) == 2 && line.count( pos => {
-        val x = pos._1
-        val y = pos._2
+        }) == 2 && line.count( pos => {
+          val x = pos._1
+          val y = pos._2
 
-        candidateBoard(x)(y) == '-'
-      }) == 1
-    )
+          candidateBoard(x)(y) == '-'
+        }) == 1
+      }
+    }
   }
 
-  def isFinalBoard = {
+  def countCorner(candidateBoard: Array[Array[Char]], isComputer: Boolean) = {
+    val flag = if (isComputer) 'X' else 'O'
+    var count = 0
+    if (candidateBoard(0)(0) == flag) count += 1
+    if (candidateBoard(2)(0) == flag) count += 1
+    if (candidateBoard(0)(2) == flag) count += 1
+    if (candidateBoard(2)(2) == flag) count += 1
+    count
+  }
+
+  def isFinalBoard(candidateBoard: Array[Array[Char]]) = {
     lines.count(line => {
       val str = line.map(pos => {
         val x = pos._1
         val y = pos._2
 
-        board(x)(y)
+        candidateBoard(x)(y)
       }).mkString("")
 
       str == "XXX" || str == "OOO"
-    }) > 0 || board.map(_.count(x => x == '-')).sum == 0
+    }) > 0 || candidateBoard.map(_.count(x => x == '-')).sum == 0
   }
 
   def objectiveFun(candidateBoard: Array[Array[Char]]) = {
-    if (isFinalBoard) {
+    if (isFinalBoard(candidateBoard)) {
       def getScore(isComputer: Boolean) = {
         val flag = if (isComputer) 'X' else 'O'
         lines.count(line =>
@@ -133,8 +143,8 @@ object PerformanceSystem extends App {
         0.0
       }
     } else {
-      val x1 = candidateBoard.map(_.count(elem => elem == 'X')).sum
-      val x2 = candidateBoard.map(_.count(elem => elem == 'O')).sum
+      val x1 = countCorner(candidateBoard, isComputer = true)
+      val x2 = countCorner(candidateBoard, isComputer = false)
       val x3 = countWinningChance(candidateBoard, isComputer = true)
       val x4 = countWinningChance(candidateBoard, isComputer = false)
       val arr = Array(x1, x2, x3, x4)
@@ -143,52 +153,60 @@ object PerformanceSystem extends App {
     }
   }
 
-  while (!isFinalBoard) {
-    val blankGrids = search
-    val candidateBoards = blankGrids.map( grid =>
-      play(grid._1, grid._2, isComputer = true)
-    )
+  while (true) {
+    if (!isFinalBoard(board)) {
+      val blankGrids = search
+      val candidateBoards = blankGrids.map( grid =>
+        play(grid._1, grid._2, isComputer = true)
+      )
 
-    val selectedBoard = candidateBoards.filter(_.isDefined).maxBy( boardOption => {
-      val b = boardOption.get
-      val s = objectiveFun(b)
-      s
-    })
+      val selectedBoard = candidateBoards.filter(_.isDefined).map( boardOption => {
+        val b = boardOption.get
+        val s = objectiveFun(b)
+        (boardOption, s)
+      }).maxBy(_._2)._1
 
-    if (selectedBoard.isDefined) {
-      history :+= selectedBoard.get
-      board = selectedBoard.get
+      if (selectedBoard.isDefined) {
+        history :+= selectedBoard.get
+        board = selectedBoard.get
 
-      println("Computer play this:")
-      printBoard
+        println("Computer play this:")
+        printBoard(board)
 
-      if (!isFinalBoard) {
-        var x = nextInt
-        var y = nextInt
-        var userBoard: Option[Array[Array[Char]]] = None
-        while (!userBoard.isDefined) {
-          userBoard = play(x, y, isComputer = false)
-          if (userBoard.isDefined) {
-            board = userBoard.get
+        if (!isFinalBoard(board)) {
+          var x = nextInt
+          var y = nextInt
+          var userBoard: Option[Array[Array[Char]]] = None
+          while (!userBoard.isDefined) {
+            userBoard = play(x, y, isComputer = false)
+            if (userBoard.isDefined) {
+              board = userBoard.get
 
-            println("Your play:")
-            printBoard
-          } else {
-            println("invalid play, please retry!")
-            x = nextInt
-            y = nextInt
+              println("Your play:")
+              printBoard(board)
+            } else {
+              println("invalid play, please retry!")
+              x = nextInt
+              y = nextInt
+            }
           }
         }
       }
-    }
-  }
+    } else {
+      val finalScore = objectiveFun(board)
+      if (finalScore == 100.0) {
+        println("Computer wins!!!")
+      } else if (finalScore == -100.0) {
+        println("You are the winner!!!")
+      } else {
+        println("Game drawn!")
+      }
 
-  val finalScore = objectiveFun(board)
-  if (finalScore == 100.0) {
-    println("Computer wins!!!")
-  } else if (finalScore == -100.0) {
-    println("You are the winner!!!")
-  } else {
-    println("Game drawn!")
+      println()
+      println("Enter into another game! Notice: the computer will be smarter!!!")
+      // clear data
+      board = Array.fill(3, 3)('-')
+      history = Array[Array[Array[Char]]]()
+    }
   }
 }
