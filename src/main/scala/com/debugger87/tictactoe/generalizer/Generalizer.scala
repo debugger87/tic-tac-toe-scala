@@ -3,7 +3,7 @@ package com.debugger87.tictactoe.generalizer
 /**
  * Created by yangchaozhong on 7/14/15.
  */
-class Generalizer {
+object Generalizer {
   val w0 = 1.0
 
   def update(w: Array[Double], sample: (Array[Int], Double)): Array[Double] = {
