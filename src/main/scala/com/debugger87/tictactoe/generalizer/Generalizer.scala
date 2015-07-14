@@ -5,7 +5,7 @@ package com.debugger87.tictactoe.generalizer
  */
 object Generalizer {
   val w0 = 1.0
-  @volatile var parameter: Array[Double] = Array(0.1, 0.1, 1.0, -2.0)
+  @volatile var parameter: Array[Double] = Array(0.1, 0.1, 1.0, -10.0)
 
   def update(sample: (Array[Int], Double)) = {
     require(parameter.size == sample._1.size)
